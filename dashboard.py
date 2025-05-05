@@ -10,6 +10,11 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
 st.set_page_config(
+    page_title="KittyPaw Analytics",
+    page_icon="🐾",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # Twilio configuration
 TWILIO_ACCOUNT_SID = 'YOUR_TWILIO_SID'  # Add to environment variables
