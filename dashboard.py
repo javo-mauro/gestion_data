@@ -56,6 +56,16 @@ def get_device_stats(device_id):
 def home_page():
     st.title("🐾 KittyPaw - Panel de Control")
     
+    # Enlaces externos
+    st.markdown("### 🔗 Enlaces Importantes")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.link_button("📋 Ver Diagrama en Miro", "https://miro.com/app/board/uXjVI-oKwLk=/", use_container_width=True)
+    with col2:
+        st.link_button("📁 Acceder a Google Drive", "https://drive.google.com/drive/home", use_container_width=True)
+    
+    st.markdown("---")
+    
     # Primera fila - Métricas principales
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("🔌 Dispositivos Activos", len(devices[devices['status'] == 'online']))
