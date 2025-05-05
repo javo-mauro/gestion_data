@@ -1,0 +1,56 @@
+📊 Análisis de la tabla: users
+============================================================
+
+🔢 Filas: 1 | Columnas: 6
+
+🧬 Tipos de datos:
+id              int64
+username       object
+password       object
+name           object
+role           object
+last_login    float64
+dtype: object
+
+🚫 Porcentaje de valores nulos por columna:
+id              0.0
+username        0.0
+password        0.0
+name            0.0
+role            0.0
+last_login    100.0
+dtype: float64
+
+📈 Estadísticas descriptivas (numéricas):
+            count  mean  std  min  25%  50%  75%  max
+id            1.0   1.0  NaN  1.0  1.0  1.0  1.0  1.0
+last_login    0.0   NaN  NaN  NaN  NaN  NaN  NaN  NaN
+
+🔡 Valores únicos por columna categórica:
+  - username: 1 valores únicos
+username
+admin    1
+Name: count, dtype: int64
+
+  - password: 1 valores únicos
+password
+admin123    1
+Name: count, dtype: int64
+
+  - name: 1 valores únicos
+name
+Javier Dayne    1
+Name: count, dtype: int64
+
+  - role: 1 valores únicos
+role
+Administrator    1
+Name: count, dtype: int64
+
+
+🔗 Correlación entre columnas numéricas:
+            id  last_login
+id         NaN         NaN
+last_login NaN         NaN
+
+------------------------------------------------------------

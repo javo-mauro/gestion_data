@@ -1,0 +1,128 @@
+📊 Análisis de la tabla: pets
+============================================================
+
+🔢 Filas: 2 | Columnas: 17
+
+🧬 Tipos de datos:
+id                       int64
+owner_id                 int64
+name                    object
+chip_number             object
+breed                   object
+species                 object
+acquisition_date        object
+birth_date              object
+origin                  object
+background              object
+has_vaccinations          bool
+has_diseases              bool
+disease_notes          float64
+last_vet_visit         float64
+kitty_paw_device_id     object
+created_at              object
+updated_at              object
+dtype: object
+
+🚫 Porcentaje de valores nulos por columna:
+id                       0.0
+owner_id                 0.0
+name                     0.0
+chip_number              0.0
+breed                    0.0
+species                  0.0
+acquisition_date         0.0
+birth_date               0.0
+origin                   0.0
+background               0.0
+has_vaccinations         0.0
+has_diseases             0.0
+disease_notes          100.0
+last_vet_visit         100.0
+kitty_paw_device_id      0.0
+created_at               0.0
+updated_at               0.0
+dtype: float64
+
+📈 Estadísticas descriptivas (numéricas):
+                count  mean       std  min   25%  50%   75%  max
+id                2.0   1.5  0.707107  1.0  1.25  1.5  1.75  2.0
+owner_id          2.0   1.0  0.000000  1.0  1.00  1.0  1.00  1.0
+disease_notes     0.0   NaN       NaN  NaN   NaN  NaN   NaN  NaN
+last_vet_visit    0.0   NaN       NaN  NaN   NaN  NaN   NaN  NaN
+
+🔡 Valores únicos por columna categórica:
+  - name: 2 valores únicos
+name
+Malto     1
+Canela    1
+Name: count, dtype: int64
+
+  - chip_number: 2 valores únicos
+chip_number
+CHIP123456    1
+CHIP789012    1
+Name: count, dtype: int64
+
+  - breed: 2 valores únicos
+breed
+Labrador      1
+Maine Coon    1
+Name: count, dtype: int64
+
+  - species: 2 valores únicos
+species
+Perro    1
+Gato     1
+Name: count, dtype: int64
+
+  - acquisition_date: 2 valores únicos
+acquisition_date
+2021-03-10    1
+2022-05-20    1
+Name: count, dtype: int64
+
+  - birth_date: 2 valores únicos
+birth_date
+2020-09-05    1
+2021-12-15    1
+Name: count, dtype: int64
+
+  - origin: 2 valores únicos
+origin
+Adoptado              1
+Tienda de mascotas    1
+Name: count, dtype: int64
+
+  - background: 2 valores únicos
+background
+Rescatado de la calle    1
+Comprada como regalo     1
+Name: count, dtype: int64
+
+  - kitty_paw_device_id: 2 valores únicos
+kitty_paw_device_id
+KPCL0021    1
+KPCL0022    1
+Name: count, dtype: int64
+
+  - created_at: 2 valores únicos
+created_at
+2025-05-04 23:32:53.831375    1
+2025-05-04 23:32:58.555790    1
+Name: count, dtype: int64
+
+  - updated_at: 2 valores únicos
+updated_at
+2025-05-04 23:32:53.831375    1
+2025-05-04 23:32:58.555790    1
+Name: count, dtype: int64
+
+
+🔗 Correlación entre columnas numéricas:
+                 id  owner_id  disease_notes  last_vet_visit
+id              1.0       NaN            NaN             NaN
+owner_id        NaN       NaN            NaN             NaN
+disease_notes   NaN       NaN            NaN             NaN
+last_vet_visit  NaN       NaN            NaN             NaN
+
+------------------------------------------------------------

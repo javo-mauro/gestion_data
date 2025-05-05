@@ -1,0 +1,71 @@
+📊 Análisis de la tabla: devices
+============================================================
+
+🔢 Filas: 2 | Columnas: 8
+
+🧬 Tipos de datos:
+id                 int64
+device_id         object
+name              object
+type              object
+ip_address       float64
+status            object
+battery_level      int64
+last_update       object
+dtype: object
+
+🚫 Porcentaje de valores nulos por columna:
+id                 0.0
+device_id          0.0
+name               0.0
+type               0.0
+ip_address       100.0
+status             0.0
+battery_level      0.0
+last_update        0.0
+dtype: float64
+
+📈 Estadísticas descriptivas (numéricas):
+               count  mean       std   min    25%   50%    75%   max
+id               2.0   1.5  0.707107   1.0   1.25   1.5   1.75   2.0
+ip_address       0.0   NaN       NaN   NaN    NaN   NaN    NaN   NaN
+battery_level    2.0  90.0  7.071068  85.0  87.50  90.0  92.50  95.0
+
+🔡 Valores únicos por columna categórica:
+  - device_id: 2 valores únicos
+device_id
+KPCL0021    1
+KPCL0022    1
+Name: count, dtype: int64
+
+  - name: 2 valores únicos
+name
+Collar de Malto    1
+Placa de Canela    1
+Name: count, dtype: int64
+
+  - type: 2 valores únicos
+type
+KittyPaw Collar     1
+KittyPaw Tracker    1
+Name: count, dtype: int64
+
+  - status: 1 valores únicos
+status
+offline    2
+Name: count, dtype: int64
+
+  - last_update: 2 valores únicos
+last_update
+2025-05-05 02:25:08.592    1
+2025-05-05 02:25:08.658    1
+Name: count, dtype: int64
+
+
+🔗 Correlación entre columnas numéricas:
+                id  ip_address  battery_level
+id             1.0         NaN           -1.0
+ip_address     NaN         NaN            NaN
+battery_level -1.0         NaN            1.0
+
+------------------------------------------------------------

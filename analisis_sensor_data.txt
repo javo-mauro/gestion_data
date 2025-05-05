@@ -1,0 +1,59 @@
+📊 Análisis de la tabla: sensor_data
+============================================================
+
+🔢 Filas: 1628 | Columnas: 5
+
+🧬 Tipos de datos:
+id              int64
+device_id      object
+timestamp      object
+data           object
+sensor_type    object
+dtype: object
+
+🚫 Porcentaje de valores nulos por columna:
+id             0.0
+device_id      0.0
+timestamp      0.0
+data           0.0
+sensor_type    0.0
+dtype: float64
+
+📈 Estadísticas descriptivas (numéricas):
+     count   mean         std  min     25%    50%      75%     max
+id  1628.0  814.5  470.107435  1.0  407.75  814.5  1221.25  1628.0
+
+🔡 Valores únicos por columna categórica:
+  - device_id: 1 valores únicos
+device_id
+KPCL0022    1628
+Name: count, dtype: int64
+
+  - timestamp: 1628 valores únicos
+timestamp
+2025-05-04 23:38:36.936    1
+2025-05-05 00:23:10.982    1
+2025-05-05 00:23:25.993    1
+2025-05-05 00:23:21.032    1
+2025-05-05 00:23:21.001    1
+Name: count, dtype: int64
+
+  - data: 1628 valores únicos
+data
+{'unit': '°C', 'value': 24.3, 'timestamp': '04/05/2025, 19:38:36'}        1
+{'unit': 'lux', 'value': 42, 'timestamp': '04/05/2025, 20:23:10'}         1
+{'unit': '°C', 'value': 22, 'timestamp': '04/05/2025, 20:23:25'}          1
+{'unit': 'g', 'value': -0.027919, 'timestamp': '04/05/2025, 20:23:20'}    1
+{'unit': 'lux', 'value': 38, 'timestamp': '04/05/2025, 20:23:20'}         1
+Name: count, dtype: int64
+
+  - sensor_type: 4 valores únicos
+sensor_type
+temperature    407
+humidity       407
+light          407
+weight         407
+Name: count, dtype: int64
+
+
+------------------------------------------------------------

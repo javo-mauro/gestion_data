@@ -1,0 +1,68 @@
+[devices]
+    *id {label:"INTEGER"}
+    battery_level {label:"INTEGER"}
+    device_id {label:"TEXT"}
+    ip_address {label:"TEXT"}
+    last_update {label:"TIMESTAMP"}
+    name {label:"TEXT"}
+    status {label:"TEXT"}
+    type {label:"TEXT"}
+[pet_owners]
+    *id {label:"INTEGER"}
+    address {label:"TEXT"}
+    birth_date {label:"TIMESTAMP"}
+    created_at {label:"TIMESTAMP"}
+    email {label:"TEXT"}
+    maternal_last_name {label:"TEXT"}
+    name {label:"TEXT"}
+    password {label:"TEXT"}
+    paternal_last_name {label:"TEXT"}
+    updated_at {label:"TIMESTAMP"}
+    username {label:"TEXT"}
+[sensor_data]
+    *id {label:"INTEGER"}
+    data {label:"JSONB"}
+    device_id {label:"TEXT"}
+    sensor_type {label:"TEXT"}
+    timestamp {label:"TIMESTAMP"}
+[pets]
+    *id {label:"INTEGER"}
+    acquisition_date {label:"TIMESTAMP"}
+    background {label:"TEXT"}
+    birth_date {label:"TIMESTAMP"}
+    breed {label:"TEXT"}
+    chip_number {label:"TEXT"}
+    created_at {label:"TIMESTAMP"}
+    disease_notes {label:"TEXT"}
+    has_diseases {label:"BOOLEAN"}
+    has_vaccinations {label:"BOOLEAN"}
+    kitty_paw_device_id {label:"TEXT"}
+    last_vet_visit {label:"TIMESTAMP"}
+    name {label:"TEXT"}
+    origin {label:"TEXT"}
+    owner_id {label:"INTEGER"}
+    species {label:"TEXT"}
+    updated_at {label:"TIMESTAMP"}
+[users]
+    *id {label:"INTEGER"}
+    last_login {label:"TIMESTAMP"}
+    name {label:"TEXT"}
+    password {label:"TEXT"}
+    role {label:"TEXT"}
+    username {label:"TEXT"}
+[mqtt_connections]
+    *id {label:"INTEGER"}
+    broker_url {label:"TEXT"}
+    ca_cert {label:"TEXT"}
+    client_cert {label:"TEXT"}
+    client_id {label:"TEXT"}
+    connected {label:"BOOLEAN"}
+    last_connected {label:"TIMESTAMP"}
+    password {label:"TEXT"}
+    private_key {label:"TEXT"}
+    user_id {label:"INTEGER"}
+    username {label:"TEXT"}
+devices."device_id" 1--* sensor_data."device_id"
+devices."device_id" ?--* pets."kitty_paw_device_id"
+pet_owners."id" 1--* pets."owner_id"
+users."id" ?--* mqtt_connections."user_id"

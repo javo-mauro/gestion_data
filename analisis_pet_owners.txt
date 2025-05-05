@@ -1,0 +1,110 @@
+📊 Análisis de la tabla: pet_owners
+============================================================
+
+🔢 Filas: 3 | Columnas: 11
+
+🧬 Tipos de datos:
+id                     int64
+name                  object
+paternal_last_name    object
+maternal_last_name    object
+address               object
+birth_date            object
+email                 object
+username              object
+password              object
+created_at            object
+updated_at            object
+dtype: object
+
+🚫 Porcentaje de valores nulos por columna:
+id                    0.0
+name                  0.0
+paternal_last_name    0.0
+maternal_last_name    0.0
+address               0.0
+birth_date            0.0
+email                 0.0
+username              0.0
+password              0.0
+created_at            0.0
+updated_at            0.0
+dtype: float64
+
+📈 Estadísticas descriptivas (numéricas):
+    count      mean       std  min  25%  50%  75%   max
+id    3.0  5.333333  6.658328  1.0  1.5  2.0  7.5  13.0
+
+🔡 Valores únicos por columna categórica:
+  - name: 3 valores únicos
+name
+Javier       1
+mcarcamo_    1
+javier3      1
+Name: count, dtype: int64
+
+  - paternal_last_name: 3 valores únicos
+paternal_last_name
+Dayne     1
+01        1
+dayne3    1
+Name: count, dtype: int64
+
+  - maternal_last_name: 3 valores únicos
+maternal_last_name
+González      1
+04-05-2025    1
+ortiz3        1
+Name: count, dtype: int64
+
+  - address: 3 valores únicos
+address
+Calle Principal 123, Ciudad                 1
+01, 01, Santiago, Peñalolen, 1              1
+Suarez Mujica, 891, Santiago, Ñuñoa, D31    1
+Name: count, dtype: int64
+
+  - birth_date: 3 valores únicos
+birth_date
+1985-06-15 00:00:00    1
+2025-05-01 04:00:00    1
+2025-12-02 03:00:00    1
+Name: count, dtype: int64
+
+  - email: 3 valores únicos
+email
+javier.dayne@example.com     1
+mauro.carcamo89@gmail.com    1
+Javier.dayne3@gmail.com      1
+Name: count, dtype: int64
+
+  - username: 3 valores únicos
+username
+jdayne     1
+000001     1
+jdayne3    1
+Name: count, dtype: int64
+
+  - password: 3 valores únicos
+password
+jdayne21         1
+javomauro1234    1
+jdayne3          1
+Name: count, dtype: int64
+
+  - created_at: 3 valores únicos
+created_at
+2025-05-04 23:32:39.438677    1
+2025-05-05 02:17:41.018000    1
+2025-05-05 02:29:54.331000    1
+Name: count, dtype: int64
+
+  - updated_at: 3 valores únicos
+updated_at
+2025-05-04 23:32:39.438677    1
+2025-05-05 02:17:41.018000    1
+2025-05-05 02:29:54.331000    1
+Name: count, dtype: int64
+
+
+------------------------------------------------------------
