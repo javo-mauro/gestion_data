@@ -7,11 +7,47 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 st.set_page_config(
-    page_title="KittyPaw Dashboard",
+    page_title="KittyPaw Analytics",
     page_icon="🐾",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Configuración personalizada
+st.markdown("""
+    <style>
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 24px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        height: 50px;
+        white-space: pre-wrap;
+        background-color: #FFFFFF;
+        border-radius: 4px;
+        color: #000000;
+        font-size: 14px;
+        font-weight: 400;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .stTabs [data-baseweb="tab-list"] button[aria-selected="true"] {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .metric-container {
+        background-color: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+    .dataframe {
+        font-size: 12px;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # Configuración de tema personalizado
 st.markdown("""
@@ -134,20 +170,109 @@ def home_page():
     st.dataframe(latest_readings)
 
 def data_page():
-    st.title("📊 Visualización de Datos de Sensores")
-
-    # Filtros
-    col1, col2 = st.columns(2)
-    with col1:
-        selected_device = st.selectbox(
-            "Seleccionar Dispositivo",
-            devices['device_id'].unique()
+    st.title("📊 Panel de Análisis de Datos")
+    
+    # Tabs para diferentes tipos de análisis
+    tab1, tab2, tab3, tab4 = st.tabs(["📱 Dispositivos", "🐾 Mascotas", "📊 Sensores", "📈 Tendencias"])
+    
+    with tab1:
+        st.subheader("Análisis de Dispositivos")
+        
+        # KPIs de dispositivos
+        cols = st.columns(4)
+        cols[0].metric("Dispositivos Totales", len(devices))
+        cols[1].metric("Dispositivos Online", len(devices[devices['status'] == 'online']))
+        cols[2].metric("Batería Promedio", f"{devices['battery_level'].mean():.1f}%")
+        cols[3].metric("Dispositivos Críticos", len(devices[devices['battery_level'] < 20]))
+        
+        # Tabla interactiva de dispositivos
+        st.dataframe(
+            devices[['name', 'device_id', 'status', 'battery_level', 'type']],
+            use_container_width=True,
+            hide_index=True
         )
-    with col2:
-        sensor_type = st.selectbox(
-            "Tipo de Sensor",
-            sensor_data['sensor_type'].unique()
+    
+    with tab2:
+        st.subheader("Análisis de Mascotas")
+        
+        # Filtros de mascotas
+        species_filter = st.multiselect("Filtrar por Especie", pets['species'].unique())
+        filtered_pets = pets if not species_filter else pets[pets['species'].isin(species_filter)]
+        
+        # Estadísticas de mascotas
+        cols = st.columns(3)
+        cols[0].metric("Total Mascotas", len(filtered_pets))
+        cols[1].metric("Con Vacunas", len(filtered_pets[filtered_pets['has_vaccinations']]))
+        cols[2].metric("Con Enfermedades", len(filtered_pets[filtered_pets['has_diseases']]))
+        
+        # Tabla detallada de mascotas
+        st.dataframe(
+            filtered_pets[['name', 'species', 'breed', 'birth_date', 'has_vaccinations']],
+            use_container_width=True,
+            hide_index=True
         )
+    
+    with tab3:
+        st.subheader("Análisis de Sensores")
+        
+        # Filtros
+        col1, col2 = st.columns(2)
+        with col1:
+            selected_device = st.selectbox(
+                "Seleccionar Dispositivo",
+                devices['device_id'].unique()
+            )
+        with col2:
+            sensor_type = st.selectbox(
+                "Tipo de Sensor",
+                sensor_data['sensor_type'].unique()
+            )
+            
+        # Datos filtrados
+        filtered_data = sensor_data[
+            (sensor_data['device_id'] == selected_device) &
+            (sensor_data['sensor_type'] == sensor_type)
+        ].copy()
+        filtered_data['timestamp'] = pd.to_datetime(filtered_data['timestamp'])
+        
+        # Estadísticas del sensor
+        if not filtered_data.empty:
+            stats = filtered_data['value'].describe()
+            cols = st.columns(4)
+            cols[0].metric("Promedio", f"{stats['mean']:.2f}")
+            cols[1].metric("Mínimo", f"{stats['min']:.2f}")
+            cols[2].metric("Máximo", f"{stats['max']:.2f}")
+            cols[3].metric("Mediciones", int(stats['count']))
+            
+            # Gráfico temporal
+            st.line_chart(
+                filtered_data.set_index('timestamp')['value'],
+                use_container_width=True
+            )
+    
+    with tab4:
+        st.subheader("Análisis de Tendencias")
+        
+        # Selección de período
+        period = st.selectbox(
+            "Seleccionar Período",
+            ["Última Hora", "Último Día", "Última Semana", "Último Mes"]
+        )
+        
+        # Análisis de tendencias por tipo de sensor
+        trends = sensor_data.groupby('sensor_type').agg({
+            'value': ['mean', 'min', 'max', 'count']
+        }).round(2)
+        
+        st.dataframe(
+            trends,
+            use_container_width=True
+        )
+        
+        # Exportar datos
+        if st.button("📥 Exportar Análisis"):
+            trends.to_csv("analisis_tendencias.csv")
+            st.success("Análisis exportado exitosamente!")
 
     filtered_data = sensor_data[
         (sensor_data['device_id'] == selected_device) &
