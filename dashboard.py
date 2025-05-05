@@ -9,8 +9,30 @@ import plotly.graph_objects as go
 st.set_page_config(
     page_title="KittyPaw Dashboard",
     page_icon="🐾",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
+
+# Configuración de tema personalizado
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: #f5f7f9;
+    }
+    .css-1d391kg {
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .metric-card {
+        background-color: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 @st.cache_data(ttl=300)  # Cache por 5 minutos
 def load_data():
@@ -205,6 +227,105 @@ def pets_page():
             col2.write(f"**Raza:** {pet['breed']}")
             col3.write(f"**Edad:** {pet['age']} años")
 
+def scrum_board():
+    st.title("📋 Scrum Board")
+    
+    # Épicas del proyecto
+    st.header("📌 Épicas del Proyecto")
+    epicas = {
+        "Monitoreo de Mascotas": "Implementación del sistema de seguimiento y monitoreo de mascotas",
+        "Gestión de Dispositivos": "Sistema de administración de dispositivos IoT",
+        "Análisis de Datos": "Procesamiento y visualización de datos de sensores",
+        "Experiencia de Usuario": "Mejora continua de la interfaz y experiencia de usuario"
+    }
+    
+    for epic, desc in epicas.items():
+        with st.expander(f"🎯 {epic}"):
+            st.write(desc)
+            
+    # Sprint actual
+    st.header("🏃‍♂️ Sprint Actual")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("📊 Sprint Progress")
+        sprint_progress = st.progress(0.65)
+        st.caption("Sprint 3: 65% Completado")
+        
+    with col2:
+        st.subheader("⏱️ Timeframe")
+        st.info("Sprint 3: 1 Mayo - 15 Mayo 2025")
+    
+    # Tablero Kanban
+    st.header("📌 Tablero Kanban")
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.markdown("### 📝 To Do")
+        tasks_todo = [
+            "Implementar alertas de batería baja",
+            "Diseñar dashboard de análisis avanzado",
+            "Optimizar consumo de datos"
+        ]
+        for task in tasks_todo:
+            st.warning(task)
+            
+    with col2:
+        st.markdown("### 🔄 In Progress")
+        tasks_progress = [
+            "Mejorar UX del dashboard",
+            "Implementar filtros avanzados"
+        ]
+        for task in tasks_progress:
+            st.info(task)
+            
+    with col3:
+        st.markdown("### 👀 Review")
+        tasks_review = [
+            "API de notificaciones",
+            "Sistema de autenticación"
+        ]
+        for task in tasks_review:
+            st.success(task)
+            
+    with col4:
+        st.markdown("### ✅ Done")
+        tasks_done = [
+            "Conexión con base de datos",
+            "Sistema básico de monitoreo",
+            "Registro de dispositivos"
+        ]
+        for task in tasks_done:
+            st.success(task)
+            
+    # Burndown Chart
+    st.header("📉 Burndown Chart")
+    burndown_data = pd.DataFrame({
+        'Día': range(1, 11),
+        'Ideal': [20, 18, 16, 14, 12, 10, 8, 6, 4, 2],
+        'Real': [20, 19, 17, 15, 14, 13, 11, 10, 8, 7]
+    })
+    
+    fig = px.line(burndown_data, x='Día', y=['Ideal', 'Real'],
+                  title='Sprint Burndown Chart')
+    st.plotly_chart(fig)
+    
+    # Retrospectiva
+    st.header("🔄 Retrospectiva del Sprint Anterior")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("✨ Lo que funcionó bien")
+        st.write("- Implementación del sistema base")
+        st.write("- Colaboración del equipo")
+        st.write("- Calidad del código")
+        
+    with col2:
+        st.subheader("🎯 Áreas de mejora")
+        st.write("- Tiempo de respuesta del servidor")
+        st.write("- Documentación del código")
+        st.write("- Pruebas automatizadas")
+
 def users_page():
     st.title("👥 Usuarios y Dueños")
     
@@ -231,19 +352,21 @@ language = st.sidebar.selectbox("Idioma / Language", ["Español", "English"])
 
 if language == "Español":
     pages = {
-        "Inicio": home_page,
-        "Visualización de Datos": data_page,
-        "Dispositivos": devices_page,
-        "Mascotas": pets_page,
-        "Usuarios": users_page
+        "🏠 Inicio": home_page,
+        "📊 Visualización de Datos": data_page,
+        "📱 Dispositivos": devices_page,
+        "🐾 Mascotas": pets_page,
+        "👥 Usuarios": users_page,
+        "📋 Scrum Board": scrum_board
     }
 else:
     pages = {
-        "Home": home_page,
-        "Data Visualization": data_page,
-        "Devices": devices_page,
-        "Pets": pets_page,
-        "Users": users_page
+        "🏠 Home": home_page,
+        "📊 Data Visualization": data_page,
+        "📱 Devices": devices_page,
+        "🐾 Pets": pets_page,
+        "👥 Users": users_page,
+        "📋 Scrum Board": scrum_board
     }
 
 page = st.sidebar.radio("Selecciona una página:", list(pages.keys()))
