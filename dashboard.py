@@ -113,14 +113,17 @@ def home_page():
     
     with col1:
         st.subheader("Estado de Dispositivos")
-        device_status = devices['status'].value_counts()
-        fig = go.Figure(data=[go.Pie(labels=device_status.index, values=device_status.values)])
-        st.plotly_chart(fig)
+        device_status = devices['status'].value_counts().reset_index()
+        device_status.columns = ['Estado', 'Cantidad']
+        st.dataframe(device_status)
+        st.caption(f"Total dispositivos: {len(devices)}")
 
     with col2:
         st.subheader("Nivel de Batería por Dispositivo")
-        fig = px.bar(devices, x='name', y='battery_level', title="Nivel de Batería")
-        st.plotly_chart(fig)
+        battery_data = devices[['name', 'battery_level']].sort_values('battery_level', ascending=False)
+        battery_data.columns = ['Dispositivo', 'Nivel de Batería']
+        st.dataframe(battery_data)
+        st.caption(f"Promedio de batería: {battery_data['Nivel de Batería'].mean():.1f}%")
 
     # Tercera fila - Últimas mediciones
     st.subheader("📊 Últimas Mediciones por Tipo de Sensor")
@@ -184,14 +187,18 @@ def devices_page():
     
     with col1:
         st.subheader("Estado de Dispositivos")
-        status_counts = devices['status'].value_counts()
-        fig = px.pie(names=status_counts.index, values=status_counts.values)
-        st.plotly_chart(fig)
+        status_data = devices['status'].value_counts().reset_index()
+        status_data.columns = ['Estado', 'Cantidad']
+        st.dataframe(status_data)
 
     with col2:
         st.subheader("Nivel de Batería")
-        fig = px.bar(devices, x='name', y='battery_level')
-        st.plotly_chart(fig)
+        battery_stats = devices.agg({
+            'battery_level': ['min', 'max', 'mean']
+        }).round(2)
+        battery_stats.columns = ['Valor']
+        battery_stats.index = ['Mínimo', 'Máximo', 'Promedio']
+        st.dataframe(battery_stats)
 
     # Detalles por dispositivo
     st.subheader("Detalles de Dispositivos")
@@ -221,15 +228,17 @@ def pets_page():
     
     with col1:
         st.subheader("Distribución por Especie")
-        species_count = pets['species'].value_counts()
-        fig = px.pie(names=species_count.index, values=species_count.values)
-        st.plotly_chart(fig)
+        species_data = pets['species'].value_counts().reset_index()
+        species_data.columns = ['Especie', 'Cantidad']
+        st.dataframe(species_data)
+        st.caption(f"Total mascotas: {len(pets)}")
     
     with col2:
-        st.subheader("Distribución por Raza")
-        breed_count = pets['breed'].value_counts().head(10)
-        fig = px.bar(x=breed_count.index, y=breed_count.values)
-        st.plotly_chart(fig)
+        st.subheader("Top 10 Razas")
+        breed_data = pets['breed'].value_counts().head(10).reset_index()
+        breed_data.columns = ['Raza', 'Cantidad']
+        st.dataframe(breed_data)
+        st.caption(f"Total razas únicas: {len(pets['breed'].unique())}")
 
     # Lista de mascotas
     st.subheader("Lista de Mascotas")
@@ -361,26 +370,14 @@ def users_page():
 
 # Navegación
 st.sidebar.title("📁 Menú de Navegación")
-language = st.sidebar.selectbox("Idioma / Language", ["Español", "English"])
-
-if language == "Español":
-    pages = {
-        "🏠 Inicio": home_page,
-        "📊 Visualización de Datos": data_page,
-        "📱 Dispositivos": devices_page,
-        "🐾 Mascotas": pets_page,
-        "👥 Usuarios": users_page,
-        "📋 Scrum Board": scrum_board
-    }
-else:
-    pages = {
-        "🏠 Home": home_page,
-        "📊 Data Visualization": data_page,
-        "📱 Devices": devices_page,
-        "🐾 Pets": pets_page,
-        "👥 Users": users_page,
-        "📋 Scrum Board": scrum_board
-    }
+pages = {
+    "🏠 Inicio": home_page,
+    "📊 Visualización de Datos": data_page,
+    "📱 Dispositivos": devices_page,
+    "🐾 Mascotas": pets_page,
+    "👥 Usuarios": users_page,
+    "📋 Scrum Board": scrum_board
+}
 
 page = st.sidebar.radio("Selecciona una página:", list(pages.keys()))
 pages[page]()
