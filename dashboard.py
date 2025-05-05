@@ -5,12 +5,11 @@ import matplotlib.pyplot as plt
 import json
 import plotly.express as px
 import plotly.graph_objects as go
-
-st.set_page_config(
-
 from twilio.rest import Client
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+
+st.set_page_config(
 
 # Twilio configuration
 TWILIO_ACCOUNT_SID = 'YOUR_TWILIO_SID'  # Add to environment variables
@@ -345,18 +344,7 @@ def data_page():
             trends.to_csv("analisis_tendencias.csv")
             st.success("Análisis exportado exitosamente!")
 
-    filtered_data = sensor_data[
-        (sensor_data['device_id'] == selected_device) &
-        (sensor_data['sensor_type'] == sensor_type)
-    ]
-
-    # Mostrar estadísticas
-    col1, col2, col3, col4 = st.columns(4)
-    stats = filtered_data['value'].describe()
-    col1.metric("Promedio", f"{stats['mean']:.2f}")
-    col2.metric("Mínimo", f"{stats['min']:.2f}")
-    col3.metric("Máximo", f"{stats['max']:.2f}")
-    col4.metric("Total Mediciones", int(stats['count']))
+    
 
     # Gráfico de línea temporal
     fig = px.line(

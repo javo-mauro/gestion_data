@@ -8,3 +8,9 @@ plotly>=5.13.0
 numpy>=1.24.0
 sendgrid
 twilio
+streamlit
+pandas
+plotly
+twilio
+sendgrid
+matplotlib

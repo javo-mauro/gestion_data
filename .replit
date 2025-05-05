@@ -11,3 +11,19 @@ run = ["sh", "-c", "python dashboard.py"]
 [[ports]]
 localPort = 8501
 externalPort = 80
+
+[workflows]
+runButton = "Run Dashboard"
+
+[[workflows.workflow]]
+name = "Run Dashboard"
+author = 35774618
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pip install -r requirements.txt"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python dashboard.py"
