@@ -9,14 +9,18 @@ st.set_page_config(
     layout="wide"
 )
 
-@st.cache_data
+@st.cache_data(ttl=300)  # Cache por 5 minutos
 def load_data():
-    devices = pd.read_csv("devices.csv")
-    mqtt = pd.read_csv("mqtt_connections.csv")
-    owners = pd.read_csv("pet_owners.csv")
-    pets = pd.read_csv("pets.csv")
-    sensor_data = pd.read_csv("sensor_data.csv")
-    users = pd.read_csv("users.csv")
+    try:
+        devices = pd.read_csv("devices.csv")
+        mqtt = pd.read_csv("mqtt_connections.csv")
+        owners = pd.read_csv("pet_owners.csv")
+        pets = pd.read_csv("pets.csv")
+        sensor_data = pd.read_csv("sensor_data.csv")
+        users = pd.read_csv("users.csv")
+    except Exception as e:
+        st.error(f"Error al cargar datos: {str(e)}")
+        return None, None, None, None, None, None
 
     if 'timestamp' in sensor_data.columns:
         sensor_data['timestamp'] = pd.to_datetime(sensor_data['timestamp'], errors='coerce')
@@ -63,7 +67,21 @@ def data_page():
         st.warning("No hay datos de sensores disponibles.")
         return
 
-    st.dataframe(sensor_data[['device_id', 'sensor_type', 'value', 'unit', 'timestamp']].sort_values(by="timestamp", ascending=False).head(20))
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.subheader("Últimos 20 registros")
+        st.dataframe(
+            sensor_data[['device_id', 'sensor_type', 'value', 'unit', 'timestamp']]
+            .sort_values(by="timestamp", ascending=False)
+            .head(20)
+            .style.highlight_max(['value'], color='lightgreen')
+        )
+    
+    with col2:
+        st.subheader("Resumen Estadístico")
+        st.write("Promedio por tipo de sensor:")
+        stats = sensor_data.groupby('sensor_type')['value'].mean().round(2)
+        st.table(stats)
 
     sensor_type = st.selectbox("Filtrar por tipo de sensor:", sensor_data['sensor_type'].dropna().unique())
     filtered = sensor_data[sensor_data['sensor_type'] == sensor_type]
