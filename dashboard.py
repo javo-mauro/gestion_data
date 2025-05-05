@@ -75,8 +75,21 @@ def get_device_stats(device_id):
         }
     return stats
 
+def update_data():
+    try:
+        import subprocess
+        subprocess.run(['python', 'kittypaw.py'], check=True)
+        st.success('¡Datos actualizados exitosamente!')
+        st.rerun()
+    except Exception as e:
+        st.error(f'Error al actualizar datos: {str(e)}')
+
 def home_page():
     st.title("🐾 KittyPaw - Panel de Control")
+    
+    # Botón de actualización
+    if st.button('🔄 Actualizar Datos'):
+        update_data()
     
     # Enlaces externos
     st.markdown("### 🔗 Enlaces Importantes")
