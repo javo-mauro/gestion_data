@@ -1,5 +1,5 @@
 id,device_id,name,type,ip_address,status,battery_level,last_update
 8,KPCL0025,Firulais01,KittyPaw Medical,,offline,100,2025-05-05 03:03:41.997
-1,KPCL0021,Collar de Malto,KittyPaw Collar,,offline,95,2025-05-05 03:49:00.300
-2,KPCL0022,Placa de Canela,KittyPaw Tracker,,offline,85,2025-05-05 03:49:00.364
+1,KPCL0021,Collar de Malto,KittyPaw Collar,,offline,95,2025-05-05 05:35:41.803
+2,KPCL0022,Placa de Canela,KittyPaw Tracker,,offline,85,2025-05-05 05:35:41.864
 3,KPCL0024,Dispositivo para Bandida02,KittyPaw Collar,,offline,100,2025-05-05 02:54:24.216
