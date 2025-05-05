@@ -7,6 +7,45 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 st.set_page_config(
+
+from twilio.rest import Client
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+# Twilio configuration
+TWILIO_ACCOUNT_SID = 'YOUR_TWILIO_SID'  # Add to environment variables
+TWILIO_AUTH_TOKEN = 'YOUR_TWILIO_TOKEN'  # Add to environment variables
+WHATSAPP_NUMBERS = ['+56979099687', '+56990819190']
+
+# SendGrid configuration
+SENDGRID_API_KEY = 'YOUR_SENDGRID_API_KEY'  # Add to environment variables
+EMAIL_TO = 'javomauro.contacto@gmail.com'
+
+def send_whatsapp_message(message):
+    client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+    for number in WHATSAPP_NUMBERS:
+        try:
+            client.messages.create(
+                body=message,
+                from_='whatsapp:+14155238886',  # Your Twilio WhatsApp number
+                to=f'whatsapp:{number}'
+            )
+        except Exception as e:
+            st.error(f"Error sending WhatsApp to {number}: {str(e)}")
+
+def send_email(message):
+    try:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        email = Mail(
+            from_email='your-verified-sender@domain.com',
+            to_emails=EMAIL_TO,
+            subject='Dashboard Report Summary',
+            plain_text_content=message
+        )
+        sg.send(email)
+    except Exception as e:
+        st.error(f"Error sending email: {str(e)}")
+
     page_title="KittyPaw Analytics",
     page_icon="🐾",
     layout="wide",
@@ -126,6 +165,38 @@ def home_page():
     # Botón de actualización
     if st.button('🔄 Actualizar Datos'):
         update_data()
+    
+    # Imagen del resumen del dashboard
+    st.image("https://raw.githubusercontent.com/your-repo/dashboard-summary.png", 
+             caption="Resumen del Dashboard")
+    
+    # Sección de envío de mensajes
+    st.header("📱 Enviar Resumen")
+    
+    # Campo de comentarios
+    message = st.text_area(
+        "Comentarios adicionales",
+        height=150,
+        placeholder="Ingrese sus comentarios aquí..."
+    )
+    
+    # Generar resumen automático
+    dashboard_summary = f"""
+    🐾 KittyPaw Dashboard - Resumen
+    
+    Dispositivos Activos: {len(devices[devices['status'] == 'online'])}
+    Total Mascotas: {len(pets)}
+    Últimas Mediciones: {len(sensor_data)}
+    
+    Comentarios: {message}
+    """
+    
+    # Botón de envío
+    if st.button('📲 Enviar Resumen a WhatsApp y Email'):
+        with st.spinner('Enviando mensajes...'):
+            send_whatsapp_message(dashboard_summary)
+            send_email(dashboard_summary)
+            st.success('✅ Resumen enviado exitosamente!')
     
     # Enlaces externos
     st.markdown("### 🔗 Enlaces Importantes")
