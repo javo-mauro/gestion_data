@@ -600,7 +600,11 @@ pages = {
 
 # Load data first to handle errors
 devices, mqtt, owners, pets, sensor_data, users = load_data()
-if None in (devices, mqtt, owners, pets, sensor_data, users):
+def check_data_loaded():
+    data_frames = [devices, mqtt, owners, pets, sensor_data, users]
+    return all(df is not None and not df.empty for df in data_frames)
+
+if not check_data_loaded():
     st.error("Error: No se pudieron cargar los datos necesarios.")
 else:
     page = st.sidebar.radio("Selecciona una página:", list(pages.keys()))
