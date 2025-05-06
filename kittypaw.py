@@ -1,9 +1,9 @@
-
 import pandas as pd
 from sqlalchemy import create_engine
 import logging
 import os
 from datetime import datetime
+import json
 
 # Configure logging
 logging.basicConfig(
@@ -33,11 +33,11 @@ def validate_and_save_data(df, tabla):
         if df.empty:
             logging.warning(f"No data found for table {tabla}")
             return False
-            
+
         # Handle JSON data for sensor_data table
         if tabla == 'sensor_data' and 'data' in df.columns:
-            df['data'] = df['data'].apply(lambda x: str(x).replace("'", '"'))
-            
+            df['data'] = df['data'].apply(lambda x: json.dumps(x) if pd.notna(x) else '{}')
+
         # Save data
         csv_path = f'{tabla}.csv'
         df.to_csv(csv_path, index=False)
