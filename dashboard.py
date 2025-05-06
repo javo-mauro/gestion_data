@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import json
 import plotly.express as px
 import plotly.graph_objects as go
+import os
 from twilio.rest import Client
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
@@ -591,5 +592,10 @@ pages = {
     "📋 Scrum Board": scrum_board
 }
 
-page = st.sidebar.radio("Selecciona una página:", list(pages.keys()))
-pages[page]()
+# Load data first to handle errors
+devices, mqtt, owners, pets, sensor_data, users = load_data()
+if None in (devices, mqtt, owners, pets, sensor_data, users):
+    st.error("Error: No se pudieron cargar los datos necesarios.")
+else:
+    page = st.sidebar.radio("Selecciona una página:", list(pages.keys()))
+    pages[page]()
