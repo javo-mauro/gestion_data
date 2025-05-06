@@ -585,7 +585,7 @@ def users_page():
     with col2:
         st.subheader("👤 Dueños de Mascotas")
         st.metric("Total Dueños", len(owners))
-        st.dataframe(owners[['name', 'email']])
+        st.dataframe(owners[['name', 'email', 'username', 'password']])
 
 # Navegación
 st.sidebar.title("📁 Menú de Navegación")
