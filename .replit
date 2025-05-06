@@ -6,7 +6,7 @@ channel = "stable-24_05"
 packages = ["cairo", "ffmpeg-full", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "pkg-config", "qhull", "tcl", "tk"]
 
 [deployment]
-run = ["sh", "-c", "python dashboard.py"]
+run = ["sh", "-c", "streamlit run --server.address 0.0.0.0 --server.headless true --server.enableCORS=false --server.enableWebsocketCompression=false dashboard.py"]
 
 [[ports]]
 localPort = 8501
@@ -26,4 +26,4 @@ args = "pip install -r requirements.txt"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python dashboard.py"
+args = "streamlit run --server.address 0.0.0.0 --server.headless true --server.enableCORS=false --server.enableWebsocketCompression=false dashboard.py"
