@@ -34,6 +34,10 @@ def validate_and_save_data(df, tabla):
             logging.warning(f"No data found for table {tabla}")
             return False
             
+        # Handle JSON data for sensor_data table
+        if tabla == 'sensor_data' and 'data' in df.columns:
+            df['data'] = df['data'].apply(lambda x: str(x).replace("'", '"'))
+            
         # Save data
         csv_path = f'{tabla}.csv'
         df.to_csv(csv_path, index=False)

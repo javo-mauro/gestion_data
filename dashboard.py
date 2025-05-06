@@ -131,7 +131,7 @@ def load_data():
         if 'timestamp' in data['sensor_data'].columns:
             data['sensor_data']['timestamp'] = pd.to_datetime(data['sensor_data']['timestamp'])
         if 'data' in data['sensor_data'].columns:
-            data['sensor_data']['data_dict'] = data['sensor_data']['data'].apply(lambda x: json.loads(x.replace("'", "\"")))
+            data['sensor_data']['data_dict'] = data['sensor_data']['data'].apply(lambda x: json.loads(str(x).replace("'", '"') if pd.notna(x) else '{}'))
             data['sensor_data']['value'] = data['sensor_data']['data_dict'].apply(lambda x: x.get('value'))
             data['sensor_data']['unit'] = data['sensor_data']['data_dict'].apply(lambda x: x.get('unit'))
             
