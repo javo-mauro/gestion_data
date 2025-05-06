@@ -466,7 +466,7 @@ def pets_page():
             col1, col2, col3 = st.columns(3)
             col1.write(f"**Especie:** {pet['species']}")
             col2.write(f"**Raza:** {pet['breed']}")
-            col3.write(f"**Edad:** {pet['age']} años")
+            col3.write(f"**Fecha Nacimiento:** {pet['birth_date']}")
 
 def scrum_board():
     st.title("📋 Scrum Board")
@@ -574,13 +574,13 @@ def users_page():
 
     with col1:
         st.subheader("🧑‍💻 Usuarios del Sistema")
-        admin_count = users['is_admin'].value_counts()
+        admin_count = users['role'].value_counts()
         fig = px.pie(
-            names=['Administradores', 'Usuarios Normales'],
-            values=[admin_count.get(True, 0), admin_count.get(False, 0)]
+            names=admin_count.index,
+            values=admin_count.values
         )
         st.plotly_chart(fig)
-        st.dataframe(users[['username', 'email', 'is_admin']])
+        st.dataframe(users[['username', 'name', 'role']])
 
     with col2:
         st.subheader("👤 Dueños de Mascotas")
