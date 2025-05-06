@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -50,11 +49,6 @@ def send_email(message):
     except Exception as e:
         st.error(f"Error sending email: {str(e)}")
 
-    page_title="KittyPaw Analytics",
-    page_icon="🐾",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
 # Configuración personalizada
 st.markdown("""
@@ -165,43 +159,43 @@ def update_data():
 
 def home_page():
     st.title("🐾 KittyPaw - Panel de Control")
-    
+
     # Botón de actualización
     if st.button('🔄 Actualizar Datos'):
         update_data()
-    
+
     # Imagen del resumen del dashboard
     st.image("https://raw.githubusercontent.com/your-repo/dashboard-summary.png", 
              caption="Resumen del Dashboard")
-    
+
     # Sección de envío de mensajes
     st.header("📱 Enviar Resumen")
-    
+
     # Campo de comentarios
     message = st.text_area(
         "Comentarios adicionales",
         height=150,
         placeholder="Ingrese sus comentarios aquí..."
     )
-    
+
     # Generar resumen automático
     dashboard_summary = f"""
     🐾 KittyPaw Dashboard - Resumen
-    
+
     Dispositivos Activos: {len(devices[devices['status'] == 'online'])}
     Total Mascotas: {len(pets)}
     Últimas Mediciones: {len(sensor_data)}
-    
+
     Comentarios: {message}
     """
-    
+
     # Botón de envío
     if st.button('📲 Enviar Resumen a WhatsApp y Email'):
         with st.spinner('Enviando mensajes...'):
             send_whatsapp_message(dashboard_summary)
             send_email(dashboard_summary)
             st.success('✅ Resumen enviado exitosamente!')
-    
+
     # Enlaces externos
     st.markdown("### 🔗 Enlaces Importantes")
     col1, col2 = st.columns(2)
@@ -209,9 +203,9 @@ def home_page():
         st.link_button("📋 Ver Diagrama en Miro", "https://miro.com/app/board/uXjVI-oKwLk=/", use_container_width=True)
     with col2:
         st.link_button("📁 Acceder a Google Drive", "https://drive.google.com/drive/home", use_container_width=True)
-    
+
     st.markdown("---")
-    
+
     # Primera fila - Métricas principales
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("🔌 Dispositivos Activos", len(devices[devices['status'] == 'online']))
@@ -221,7 +215,7 @@ def home_page():
 
     # Segunda fila - Gráficos resumen
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.subheader("Estado de Dispositivos")
         device_status = devices['status'].value_counts().reset_index()
@@ -246,50 +240,50 @@ def home_page():
 
 def data_page():
     st.title("📊 Panel de Análisis de Datos")
-    
+
     # Tabs para diferentes tipos de análisis
     tab1, tab2, tab3, tab4 = st.tabs(["📱 Dispositivos", "🐾 Mascotas", "📊 Sensores", "📈 Tendencias"])
-    
+
     with tab1:
         st.subheader("Análisis de Dispositivos")
-        
+
         # KPIs de dispositivos
         cols = st.columns(4)
         cols[0].metric("Dispositivos Totales", len(devices))
         cols[1].metric("Dispositivos Online", len(devices[devices['status'] == 'online']))
         cols[2].metric("Batería Promedio", f"{devices['battery_level'].mean():.1f}%")
         cols[3].metric("Dispositivos Críticos", len(devices[devices['battery_level'] < 20]))
-        
+
         # Tabla interactiva de dispositivos
         st.dataframe(
             devices[['name', 'device_id', 'status', 'battery_level', 'type']],
             use_container_width=True,
             hide_index=True
         )
-    
+
     with tab2:
         st.subheader("Análisis de Mascotas")
-        
+
         # Filtros de mascotas
         species_filter = st.multiselect("Filtrar por Especie", pets['species'].unique())
         filtered_pets = pets if not species_filter else pets[pets['species'].isin(species_filter)]
-        
+
         # Estadísticas de mascotas
         cols = st.columns(3)
         cols[0].metric("Total Mascotas", len(filtered_pets))
         cols[1].metric("Con Vacunas", len(filtered_pets[filtered_pets['has_vaccinations']]))
         cols[2].metric("Con Enfermedades", len(filtered_pets[filtered_pets['has_diseases']]))
-        
+
         # Tabla detallada de mascotas
         st.dataframe(
             filtered_pets[['name', 'species', 'breed', 'birth_date', 'has_vaccinations']],
             use_container_width=True,
             hide_index=True
         )
-    
+
     with tab3:
         st.subheader("Análisis de Sensores")
-        
+
         # Filtros
         col1, col2 = st.columns(2)
         with col1:
@@ -302,14 +296,14 @@ def data_page():
                 "Tipo de Sensor",
                 sensor_data['sensor_type'].unique()
             )
-            
+
         # Datos filtrados
         filtered_data = sensor_data[
             (sensor_data['device_id'] == selected_device) &
             (sensor_data['sensor_type'] == sensor_type)
         ].copy()
         filtered_data['timestamp'] = pd.to_datetime(filtered_data['timestamp'])
-        
+
         # Estadísticas del sensor
         if not filtered_data.empty:
             stats = filtered_data['value'].describe()
@@ -318,38 +312,38 @@ def data_page():
             cols[1].metric("Mínimo", f"{stats['min']:.2f}")
             cols[2].metric("Máximo", f"{stats['max']:.2f}")
             cols[3].metric("Mediciones", int(stats['count']))
-            
+
             # Gráfico temporal
             st.line_chart(
                 filtered_data.set_index('timestamp')['value'],
                 use_container_width=True
             )
-    
+
     with tab4:
         st.subheader("Análisis de Tendencias")
-        
+
         # Selección de período
         period = st.selectbox(
             "Seleccionar Período",
             ["Última Hora", "Último Día", "Última Semana", "Último Mes"]
         )
-        
+
         # Análisis de tendencias por tipo de sensor
         trends = sensor_data.groupby('sensor_type').agg({
             'value': ['mean', 'min', 'max', 'count']
         }).round(2)
-        
+
         st.dataframe(
             trends,
             use_container_width=True
         )
-        
+
         # Exportar datos
         if st.button("📥 Exportar Análisis"):
             trends.to_csv("analisis_tendencias.csv")
             st.success("Análisis exportado exitosamente!")
 
-    
+
 
     # Gráfico de línea temporal
     fig = px.line(
@@ -370,10 +364,10 @@ def data_page():
 
 def devices_page():
     st.title("📱 Dispositivos")
-    
+
     # Resumen de dispositivos
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.subheader("Estado de Dispositivos")
         status_data = devices['status'].value_counts().reset_index()
@@ -397,7 +391,7 @@ def devices_page():
             col1.metric("Estado", device['status'])
             col2.metric("Batería", f"{device['battery_level']}%")
             col3.metric("Tipo", device['type'])
-            
+
             # Estadísticas de sensores
             stats = get_device_stats(device['device_id'])
             if stats:
@@ -411,17 +405,17 @@ def devices_page():
 
 def pets_page():
     st.title("🐕 Mascotas")
-    
+
     # Resumen de mascotas
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.subheader("Distribución por Especie")
         species_data = pets['species'].value_counts().reset_index()
         species_data.columns = ['Especie', 'Cantidad']
         st.dataframe(species_data)
         st.caption(f"Total mascotas: {len(pets)}")
-    
+
     with col2:
         st.subheader("Top 10 Razas")
         breed_data = pets['breed'].value_counts().head(10).reset_index()
@@ -440,7 +434,7 @@ def pets_page():
 
 def scrum_board():
     st.title("📋 Scrum Board")
-    
+
     # Épicas del proyecto
     st.header("📌 Épicas del Proyecto")
     epicas = {
@@ -449,28 +443,28 @@ def scrum_board():
         "Análisis de Datos": "Procesamiento y visualización de datos de sensores",
         "Experiencia de Usuario": "Mejora continua de la interfaz y experiencia de usuario"
     }
-    
+
     for epic, desc in epicas.items():
         with st.expander(f"🎯 {epic}"):
             st.write(desc)
-            
+
     # Sprint actual
     st.header("🏃‍♂️ Sprint Actual")
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.subheader("📊 Sprint Progress")
         sprint_progress = st.progress(0.65)
         st.caption("Sprint 3: 65% Completado")
-        
+
     with col2:
         st.subheader("⏱️ Timeframe")
         st.info("Sprint 3: 1 Mayo - 15 Mayo 2025")
-    
+
     # Tablero Kanban
     st.header("📌 Tablero Kanban")
     col1, col2, col3, col4 = st.columns(4)
-    
+
     with col1:
         st.markdown("### 📝 To Do")
         tasks_todo = [
@@ -480,7 +474,7 @@ def scrum_board():
         ]
         for task in tasks_todo:
             st.warning(task)
-            
+
     with col2:
         st.markdown("### 🔄 In Progress")
         tasks_progress = [
@@ -489,7 +483,7 @@ def scrum_board():
         ]
         for task in tasks_progress:
             st.info(task)
-            
+
     with col3:
         st.markdown("### 👀 Review")
         tasks_review = [
@@ -498,7 +492,7 @@ def scrum_board():
         ]
         for task in tasks_review:
             st.success(task)
-            
+
     with col4:
         st.markdown("### ✅ Done")
         tasks_done = [
@@ -508,7 +502,7 @@ def scrum_board():
         ]
         for task in tasks_done:
             st.success(task)
-            
+
     # Burndown Chart
     st.header("📉 Burndown Chart")
     burndown_data = pd.DataFrame({
@@ -516,21 +510,21 @@ def scrum_board():
         'Ideal': [20, 18, 16, 14, 12, 10, 8, 6, 4, 2],
         'Real': [20, 19, 17, 15, 14, 13, 11, 10, 8, 7]
     })
-    
+
     fig = px.line(burndown_data, x='Día', y=['Ideal', 'Real'],
                   title='Sprint Burndown Chart')
     st.plotly_chart(fig)
-    
+
     # Retrospectiva
     st.header("🔄 Retrospectiva del Sprint Anterior")
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.subheader("✨ Lo que funcionó bien")
         st.write("- Implementación del sistema base")
         st.write("- Colaboración del equipo")
         st.write("- Calidad del código")
-        
+
     with col2:
         st.subheader("🎯 Áreas de mejora")
         st.write("- Tiempo de respuesta del servidor")
@@ -539,9 +533,9 @@ def scrum_board():
 
 def users_page():
     st.title("👥 Usuarios y Dueños")
-    
+
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.subheader("🧑‍💻 Usuarios del Sistema")
         admin_count = users['is_admin'].value_counts()
@@ -551,7 +545,7 @@ def users_page():
         )
         st.plotly_chart(fig)
         st.dataframe(users[['username', 'email', 'is_admin']])
-    
+
     with col2:
         st.subheader("👤 Dueños de Mascotas")
         st.metric("Total Dueños", len(owners))
