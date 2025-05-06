@@ -13,7 +13,7 @@ localPort = 8501
 externalPort = 80
 
 [workflows]
-runButton = "Run Dashboard"
+runButton = "Update and Run Dashboard"
 
 [[workflows.workflow]]
 name = "Run Dashboard"
@@ -23,6 +23,19 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "pip install -r requirements.txt"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "streamlit run --server.address 0.0.0.0 --server.headless true --server.enableCORS=false --server.enableWebsocketCompression=false dashboard.py"
+
+[[workflows.workflow]]
+name = "Update and Run Dashboard"
+author = 35774618
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python kittypaw.py"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"

@@ -109,13 +109,32 @@ st.markdown("""
 
 @st.cache_data(ttl=300)  # Cache por 5 minutos
 def load_data():
+    data = {}
+    required_files = {
+        'devices': "devices.csv",
+        'mqtt': "mqtt_connections.csv",
+        'owners': "pet_owners.csv",
+        'pets': "pets.csv",
+        'sensor_data': "sensor_data.csv",
+        'users': "users.csv"
+    }
+    
     try:
-        devices = pd.read_csv("devices.csv")
-        mqtt = pd.read_csv("mqtt_connections.csv")
-        owners = pd.read_csv("pet_owners.csv")
-        pets = pd.read_csv("pets.csv")
-        sensor_data = pd.read_csv("sensor_data.csv")
-        users = pd.read_csv("users.csv")
+        for key, file in required_files.items():
+            if not os.path.exists(file):
+                st.error(f"Archivo no encontrado: {file}")
+                return None, None, None, None, None, None
+            data[key] = pd.read_csv(file)
+            
+        # Process timestamps and data
+        if 'timestamp' in data['sensor_data'].columns:
+            data['sensor_data']['timestamp'] = pd.to_datetime(data['sensor_data']['timestamp'])
+        if 'data' in data['sensor_data'].columns:
+            data['sensor_data']['data_dict'] = data['sensor_data']['data'].apply(lambda x: json.loads(x.replace("'", "\"")))
+            data['sensor_data']['value'] = data['sensor_data']['data_dict'].apply(lambda x: x.get('value'))
+            data['sensor_data']['unit'] = data['sensor_data']['data_dict'].apply(lambda x: x.get('unit'))
+            
+        return data['devices'], data['mqtt'], data['owners'], data['pets'], data['sensor_data'], data['users']
     except Exception as e:
         st.error(f"Error al cargar datos: {str(e)}")
         return None, None, None, None, None, None
