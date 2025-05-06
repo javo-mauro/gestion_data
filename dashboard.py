@@ -110,8 +110,9 @@ st.markdown("""
 
 @st.cache_data(ttl=300)  # Cache por 5 minutos
 def load_data():
-    data = {}
-    required_files = {
+    try:
+        data = {}
+        required_files = {
         'devices': "devices.csv",
         'mqtt': "mqtt_connections.csv",
         'owners': "pet_owners.csv",
@@ -184,9 +185,8 @@ def home_page():
     if st.button('🔄 Actualizar Datos'):
         update_data()
 
-    # Imagen del resumen del dashboard
-    st.image("https://raw.githubusercontent.com/your-repo/dashboard-summary.png", 
-             caption="Resumen del Dashboard")
+    # Dashboard header
+    st.markdown("### 📊 Resumen del Dashboard")
 
     # Sección de envío de mensajes
     st.header("📱 Enviar Resumen")
@@ -384,6 +384,16 @@ def data_page():
 
 def devices_page():
     st.title("📱 Dispositivos")
+    
+    if devices is None or devices.empty:
+        st.error("No hay datos de dispositivos disponibles")
+        return
+
+    # Selector de dispositivo
+    selected_device = st.selectbox(
+        "Seleccionar Dispositivo",
+        devices['device_id'].unique() if devices is not None else []
+    )
 
     # Resumen de dispositivos
     col1, col2 = st.columns(2)
