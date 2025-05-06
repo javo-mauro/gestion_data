@@ -44,15 +44,6 @@ def validate_and_save_data(df, tabla):
         return False
 
 def main():
-    # Create backup of existing files
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    for file in os.listdir('.'):
-        if file.endswith('.csv'):
-            try:
-                os.rename(file, f'backup_{timestamp}_{file}')
-            except Exception as e:
-                logging.warning(f"Could not backup {file}: {e}")
-
     # Connect to database
     engine = connect_to_db()
     if not engine:
