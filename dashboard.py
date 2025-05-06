@@ -110,9 +110,8 @@ st.markdown("""
 
 @st.cache_data(ttl=300)  # Cache por 5 minutos
 def load_data():
-    try:
-        data = {}
-        required_files = {
+    data = {}
+    required_files = {
         'devices': "devices.csv",
         'mqtt': "mqtt_connections.csv",
         'owners': "pet_owners.csv",
