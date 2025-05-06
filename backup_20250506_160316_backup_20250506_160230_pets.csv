@@ -1,4 +1,0 @@
-id,owner_id,name,chip_number,breed,species,acquisition_date,birth_date,origin,background,has_vaccinations,has_diseases,disease_notes,last_vet_visit,kitty_paw_device_id,created_at,updated_at
-1,1,Malto,CHIP123456,Labrador,Perro,2021-03-10 00:00:00,2020-09-05 00:00:00,Adoptado,Rescatado de la calle,True,False,,,KPCL0021,2025-05-04 23:32:53.831375,2025-05-04 23:32:53.831375
-2,1,Canela,CHIP789012,Maine Coon,Gato,2022-05-20 00:00:00,2021-12-15 00:00:00,Tienda de mascotas,Comprada como regalo,True,False,,,KPCL0022,2025-05-04 23:32:58.555790,2025-05-04 23:32:58.555790
-6,13,Bandida02,126548595647584,DPL,Felino,2025-05-04 04:00:00,2025-05-04 04:00:00,adopcion,malo,True,True,dolor de cabeza,2025-05-04 04:00:00,KPCL0025,2025-05-05 02:54:24.265000,2025-05-05 03:03:42.331000
