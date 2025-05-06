@@ -580,7 +580,7 @@ def users_page():
             values=admin_count.values
         )
         st.plotly_chart(fig)
-        st.dataframe(users[['username', 'name', 'role']])
+        st.dataframe(users[['username', 'password', 'name', 'role']])
 
     with col2:
         st.subheader("👤 Dueños de Mascotas")
