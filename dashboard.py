@@ -113,15 +113,14 @@ def load_data():
     try:
         data = {}
         required_files = {
-        'devices': "devices.csv",
-        'mqtt': "mqtt_connections.csv",
-        'owners': "pet_owners.csv",
-        'pets': "pets.csv",
-        'sensor_data': "sensor_data.csv",
-        'users': "users.csv"
-    }
-    
-    try:
+            'devices': "devices.csv",
+            'mqtt': "mqtt_connections.csv",
+            'owners': "pet_owners.csv",
+            'pets': "pets.csv",
+            'sensor_data': "sensor_data.csv",
+            'users': "users.csv"
+        }
+        
         for key, file in required_files.items():
             if not os.path.exists(file):
                 st.error(f"Archivo no encontrado: {file}")
@@ -136,23 +135,15 @@ def load_data():
             data['sensor_data']['value'] = data['sensor_data']['data_dict'].apply(lambda x: x.get('value'))
             data['sensor_data']['unit'] = data['sensor_data']['data_dict'].apply(lambda x: x.get('unit'))
             
+        if 'timestamp' in data['mqtt'].columns:
+            data['mqtt']['timestamp'] = pd.to_datetime(data['mqtt']['timestamp'], errors='coerce')
+        if 'created_at' in data['users'].columns:
+            data['users']['created_at'] = pd.to_datetime(data['users']['created_at'], errors='coerce')
+            
         return data['devices'], data['mqtt'], data['owners'], data['pets'], data['sensor_data'], data['users']
     except Exception as e:
         st.error(f"Error al cargar datos: {str(e)}")
         return None, None, None, None, None, None
-
-    if 'timestamp' in sensor_data.columns:
-        sensor_data['timestamp'] = pd.to_datetime(sensor_data['timestamp'], errors='coerce')
-        sensor_data['data_dict'] = sensor_data['data'].apply(lambda x: json.loads(x.replace("'", "\"")))
-        sensor_data['value'] = sensor_data['data_dict'].apply(lambda x: x.get('value'))
-        sensor_data['unit'] = sensor_data['data_dict'].apply(lambda x: x.get('unit'))
-
-    if 'timestamp' in mqtt.columns:
-        mqtt['timestamp'] = pd.to_datetime(mqtt['timestamp'], errors='coerce')
-    if 'created_at' in users.columns:
-        users['created_at'] = pd.to_datetime(users['created_at'], errors='coerce')
-
-    return devices, mqtt, owners, pets, sensor_data, users
 
 devices, mqtt, owners, pets, sensor_data, users = load_data()
 
