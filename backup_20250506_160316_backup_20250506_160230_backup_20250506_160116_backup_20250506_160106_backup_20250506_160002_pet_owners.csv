@@ -1,0 +1,4 @@
+id,name,paternal_last_name,maternal_last_name,address,birth_date,email,username,password,created_at,updated_at
+1,Javier,Dayne,González,"Calle Principal 123, Ciudad",1985-06-15 00:00:00,javier.dayne@example.com,jdayne,jdayne21,2025-05-04 23:32:39.438677,2025-05-04 23:32:39.438677
+2,mcarcamo_,01,04-05-2025,"01, 01, Santiago, Peñalolen, 1",2025-05-01 04:00:00,mauro.carcamo89@gmail.com,000001,javomauro1234,2025-05-05 02:17:41.018000,2025-05-05 02:17:41.018000
+13,javier3,dayne3,ortiz3,"Suarez Mujica, 891, Santiago, Ñuñoa, D31",2025-12-02 03:00:00,Javier.dayne3@gmail.com,jdayne3,jdayne3,2025-05-05 02:29:54.331000,2025-05-05 02:29:54.331000
