@@ -402,6 +402,16 @@ def devices_page():
                     st.write(f"- Mín: {stat['min']:.2f}")
                     st.write(f"- Máx: {stat['max']:.2f}")
                     st.write(f"- Total mediciones: {stat['count']}")
+                    
+    # Gráfico de línea temporal
+    filtered_data = sensor_data[sensor_data['device_id'] == selected_device]
+    fig = px.line(
+        filtered_data,
+        x='timestamp',
+        y='value',
+        title=f"Mediciones del dispositivo {selected_device}"
+    )
+    st.plotly_chart(fig)
 
 def pets_page():
     st.title("🐕 Mascotas")
