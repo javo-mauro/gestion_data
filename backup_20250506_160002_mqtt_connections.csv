@@ -1,5 +1,5 @@
 id,user_id,broker_url,client_id,username,password,ca_cert,client_cert,private_key,connected,last_connected
-3,1.0,mqtt://broker.emqx.io:1883,kitty-paw-client1,,,,,,True,2025-05-06 15:57:08.845
+3,1.0,mqtt://broker.emqx.io:1883,kitty-paw-client1,,,,,,True,2025-05-06 01:01:53.086
 4,,mqtts://a2fvfjwoybq3qw-ats.iot.us-east-2.amazonaws.com,kittypaw-django,,,"-----BEGIN CERTIFICATE-----
 MIIDQTCCAimgAwIBAgITBmyfz5m/jAo54vB4ikPmljZbyjANBgkqhkiG9w0BAQsF
 ADA5MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRkwFwYDVQQDExBBbWF6
